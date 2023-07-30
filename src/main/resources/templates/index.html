@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Github Retriever</title>
+
+    <!-- Link to Bootstrap CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark-theme">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                Github Retriever
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" th:classappend="${currentPage == 'home' ? 'active' : ''}" aria-current="page" href="/">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle"
+                           th:classappend="${currentPage == 'applications' ? 'active' : ''}"
+                           href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Applications
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li th:each="app : ${apps}">
+                                <a class="dropdown-item" href="/getIssues" th:text="${app.name}"></a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid page-body">
+        <div class="row">
+            <img class="retriever-logo mx-auto" th:src="@{/images/GithubRetriever.png}">
+        </div>
+        <div class="row">
+            <table class="table table-dark app-table mx-auto">
+                <thead>
+                <tr>
+                    <th scope="col">EAI</th>
+                    <th scope="col">App Name</th>
+                    <th scope="col">Technology</th>
+                    <th scope="col">Platform</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="app : ${apps}">
+                    <th scope="row" th:text="${app.eai}"></th>
+                    <td th:text="${app.name}"></td>
+                    <td th:text="${app.technology}"></td>
+                    <td th:text="${app.platform}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- Link to Bootstrap's JavaScript dependencies -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+.navbar-dark-theme {
+        background-color: #282828;
+    }
+
+    .navbar-dark-theme .navbar-brand,
+    .navbar-dark-theme .nav-link,
+    .navbar-dark-theme .navbar-toggler-icon {
+        color: #b3a1d2; /* Light shade of purple for text */
+    }
+
+    .navbar-dark-theme .nav-link:hover,
+    .navbar-dark-theme .navbar-brand:hover {
+        color: #ff9234; /* Shade of orange for hover effects */
+    }
+
+    .navbar-dark-theme .navbar-toggler {
+        border-color: #b3a1d2;
+    }
+
+    .navbar-dark-theme .btn-outline-success {
+        color: #b3a1d2;
+        border-color: #b3a1d2;
+    }
+
+    .navbar-dark-theme .btn-outline-success:hover {
+        background-color: #b3a1d2;
+        color: #282828;
+    }
+
+    .navbar-dark-theme .dropdown-menu {
+        background-color: #1f1f1f;
+    }
+
+    .navbar-dark-theme .dropdown-item {
+        color: #b3a1d2;
+    }
+
+    .navbar-dark-theme .dropdown-item:hover {
+        background-color: #ff9234;
+        color: #282828;
+    }
+
+    .retriever-logo {
+        width: 8%;
+        border-radius: 50%;
+    }
+
+    .page-body {
+        background-color: #282828;
+    }
+
+    .app-table {
+        width: 75%;
+        margin-top: 2%;
+    }
+
+    .issues-list {
+        margin-top: 2%;
+        margin-bottom: 20%;
+    }

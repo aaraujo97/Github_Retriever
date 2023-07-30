@@ -1,4 +1,4 @@
-package com.ghretriever.Github_Retriever;
+package com.ghretriever.Github_Retriever.Configurations;
 
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;

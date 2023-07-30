@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issues List</title>
+
+    <!-- Link to Bootstrap CSS -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark-theme">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            Github Retriever
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" th:classappend="${currentPage == 'home' ? 'active' : ''}" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle"
+                       th:classappend="${currentPage == 'applications' ? 'active' : ''}"
+                       href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Applications
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li th:each="app : ${apps}">
+                            <a class="dropdown-item" href="/getIssues" th:text="${app.name}"></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-fluid page-body">
+        <div class="row">
+            <div class="accordion issues-list" id="accordionExample">
+                <div class="accordion-item" th:each="issue,iterStat : ${issues}">
+                    <h2 class="accordion-header" id="'heading' + ${iterStat.index}">
+                        <button class="accordion-button"
+                                th:classappend="${iterStat.first} ? '' : 'collapsed'"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                th:attr="data-bs-target='#collapse' + ${iterStat.index}, aria-controls='collapse' + ${iterStat.index}"
+                                aria-expanded="true"
+                                th:text="${issue.title}"
+                                >
+                        </button>
+                    </h2>
+                    <div th:id="'collapse'+${iterStat.index}" th:class="${iterStat.first} ? 'accordion-collapse collapse show' : 'accordion-collapse collapse'" th:attr="aria-labelledby='heading' + ${iterStat.index}" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div th:utext="${renderedIssueBodies[iterStat.index]}"></div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Link to Bootstrap's JavaScript dependencies -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

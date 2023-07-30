@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 public class RetrieverService {
     @Autowired
     private RestTemplate restTemplate;
+
     private HttpHeaders headers;
     private HttpEntity<String> httpEntity;
     @Value("${pa.token}")
