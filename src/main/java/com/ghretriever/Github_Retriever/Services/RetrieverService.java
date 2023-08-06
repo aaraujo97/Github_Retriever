@@ -1,7 +1,9 @@
 package com.ghretriever.Github_Retriever.Services;
 
 
+import com.ghretriever.Github_Retriever.Entities.Application;
 import com.ghretriever.Github_Retriever.Entities.Issue;
+import com.ghretriever.Github_Retriever.ErrorHandling.GithubRetrievalException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,6 +20,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import static com.ghretriever.Github_Retriever.Constants.Constants.GITHUB_ERROR;
 
 @Slf4j
 @Service
@@ -26,6 +32,8 @@ public class RetrieverService {
 
     private HttpHeaders headers;
     private HttpEntity<String> httpEntity;
+
+    private List<Application> applications;
     @Value("${pa.token}")
     private String token;
     @Value("${user.agent}")
@@ -37,26 +45,39 @@ public class RetrieverService {
     @Value("${github.owner}")
     private String owner;
 
-    public List<Issue> getIssues(String repo) throws RestClientException
+    public ResponseEntity<List<Issue>> getIssues(String repo) throws RestClientException
     {
         initializeRequest();
-        log.info("Constructed URL is: {}", baseUrl + constructIssuesUrl(repo));
         final String constructedUrl = baseUrl + constructIssuesUrl(repo);
 
-        try{
-            ResponseEntity<List<Issue>> responseList = restTemplate.exchange(
+        ResponseEntity<List<Issue>> responseList = restTemplate.exchange(
                     constructedUrl,
                     HttpMethod.GET,
                     httpEntity,
                     new ParameterizedTypeReference<>() {
                     });
 
-            return responseList.getBody();
+        if (!responseList.getStatusCode().is2xxSuccessful())
+        {
+            throw new GithubRetrievalException(GITHUB_ERROR + responseList.getBody().get(0),
+                        HttpStatus.valueOf(responseList.getStatusCode().value()));
         }
-        catch(RestClientException e){
-            log.error("Failed to send request with {}",e);
-            throw e;
+
+        if (responseList.getBody().isEmpty())
+        {
+            throw new GithubRetrievalException(GITHUB_ERROR + " No issues found.",HttpStatus.NO_CONTENT);
         }
+
+        return responseList;
+    }
+
+    public List<String> getMarkdownIssues(String repo)
+    {
+        return FormatterService.convertMarkdownToHtml(
+                getIssues(repo).getBody().stream()
+                        .map(Issue::getBody)
+                        .collect(Collectors.toList())
+        );
     }
 
     private void initializeRequest()

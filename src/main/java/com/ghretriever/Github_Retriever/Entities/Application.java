@@ -9,6 +9,7 @@ public class Application {
 
     private String eai;
     private String name;
+    private String html_url;
     private String technology;
     private String platform;
 
@@ -18,6 +19,7 @@ public class Application {
         this.name = "-";
         this.technology = "-";
         this.platform = "-";
+        this.html_url = "-";
     }
 
 }

@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class FormatterService {
 
-    public List<String> convertMarkdownToHtml(List<String> markdown)
+    public static List<String> convertMarkdownToHtml(List<String> markdown)
     {
         List<String> html = new ArrayList<>();
 
