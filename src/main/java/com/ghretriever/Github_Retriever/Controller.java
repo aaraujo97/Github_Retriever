@@ -23,6 +23,7 @@ public class Controller {
     private FormatterService formatterService;
 
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/issues/{repo}")
     @ApiResponses(
             value = {
@@ -40,6 +41,7 @@ public class Controller {
         return response.getBody();
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/markdown/{repo}")
     @ApiResponses(
             value = {
