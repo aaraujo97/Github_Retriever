@@ -1,25 +1,21 @@
 package com.ghretriever.Github_Retriever.Services;
 
 
+import com.ghretriever.Github_Retriever.DTO.NewIssueDTO;
 import com.ghretriever.Github_Retriever.Entities.Application;
 import com.ghretriever.Github_Retriever.Entities.Issue;
 import com.ghretriever.Github_Retriever.ErrorHandling.GithubRetrievalException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static com.ghretriever.Github_Retriever.Constants.Constants.GITHUB_ERROR;
@@ -78,6 +74,23 @@ public class RetrieverService {
                         .map(Issue::getBody)
                         .collect(Collectors.toList())
         );
+    }
+
+    public ResponseEntity<Void> createNewIssue(NewIssueDTO newIssue) throws RestClientException
+    {
+        initializeRequest();
+        HttpEntity<NewIssueDTO> request = new HttpEntity<>(newIssue,headers);
+
+        final String constructedUrl = baseUrl + constructIssuesUrl(newIssue.getBelongsTo());
+
+        ResponseEntity<Void> response = restTemplate.exchange(
+                constructedUrl,
+                HttpMethod.POST,
+                request,
+                new ParameterizedTypeReference<>() {
+                });
+
+        return response;
     }
 
     private void initializeRequest()
